@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='list.css')}}">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th>Foto</th>
+            <th>Precio</th>
+            <th>Id_Categoria</th>
+            <th>Id_Vendedor</th>
+            <th>Creado</th>
+            <th>Actualizado</th>
+        </tr>
+        {% for element in datos %}
+        <tr>
+            <td>{{element[0]}}</td>
+            <td>{{element[1]}}</td>
+            <td>{{element[2]}}</td>
+            <td>{{element[3]}}</td>
+            <td>{{element[4]}}</td>
+            <td>{{element[5]}}</td>
+            <td>{{element[6]}}</td>
+            <td>{{element[7]}}</td>
+            <td>{{element[8]}}</td>
+        </tr>
+        {% endfor %}
+        <!-- Puedes agregar más filas con datos aquí -->
+    </table>
+    
+    </body>
+    </html>
+    
+    
+    
+    
+    
+    
+    
+</body>
+</html>
