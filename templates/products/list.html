@@ -10,7 +10,8 @@
 <body>
     <div class="botones">
         <a href="/"><i class="fa-solid fa-house" style="color: #10da1e;"></i></i></a>
-        <a href="/products/create"><i class="fa-solid fa-plus" style="color: #19d71c;"></i></a>
+        <!-- <a href="/products/create"><i class="fa-solid fa-plus" style="color: #19d71c;"></i></a> -->
+        <a class="action" href="{{url_for('crearProducte')}}"><i class="fa-solid fa-plus" style="color: #19d71c;"></i></a>
     </div>
     <table>
         
@@ -23,18 +24,19 @@
             <th>Precio</th>
         </tr>
         {% for element in datos %}
+        
         <tr>
             <td>
-                <a src="#"><i class="fa-regular fa-eye"></i></a>
-                <a src="#"><i class="fa-solid fa-trash"></i></a>
-                <a src="#"><i class="fa-solid fa-pen-to-square"></i></a>
+                <a href="/products/read/{{element.id}}"><i class="fa-regular fa-eye"></i></a>
+                <a href="/products/delete/{{element.id}}"><i class="fa-solid fa-trash"></i></a>
+                <a href="/products/update/{{element.id}}"><i class="fa-solid fa-pen-to-square"></i></a>
 
             </td>
-            <td>{{element[0]}}</td>
-            <td>{{element[1]}}</td>
-            <td>{{element[2]}}</td>
-            <td>{{element[3]}}</td>
-            <td>{{element[4]}}</td>
+            <td>{{element.id}}</td>
+            <td>{{element.title}}</td>
+            <td>{{element.description}}</td>
+            <td>{{element.photo}}</td>
+            <td>{{element.price}}</td>
         </tr>
         {% endfor %}
         
