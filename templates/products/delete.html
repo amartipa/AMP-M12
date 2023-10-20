@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar Producto</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='list.css')}}">
+</head>
+<body>
+
+<h2>¿Estás seguro de que quieres eliminar el siguiente producto?</h2>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ item.title }}</p>
+    <p>{{ item.description }}</p>
+    <p>{{ item.photo }}</p>
+    <p>{{ item.price }}</p>
+    
+    {{ form.submit(label="Delete") }}
+</form>
+
+</body>
+</html>

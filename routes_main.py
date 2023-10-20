@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for,Blueprint
+from flask import Flask, render_template, request, redirect, url_for,Blueprint,flash
 import sqlite3,datetime,os
 from werkzeug.utils import secure_filename
 from . import db_manager as db
 from .models import Category,Product,User
+from .forms import DeleteForm, ItemForm
 
 DATABASE = 'database.db'
 UPLOAD_FOLDER = 'uploads'
@@ -75,42 +76,52 @@ def crearProducte():
 
         return ("Error al crear el producte")
     
-@main_bp.route("/products/update/<int:product_id>", methods = ['POST', 'GET'])
-def updateProduct(product_id):
-    producte = db.session.query(Product).filter(Product.id == product_id).one()
+@main_bp.route("/products/update/<int:id>", methods=['GET', 'POST'])
+def update(id):
+    item = db.session.query(Product).filter(Product.id == id).one()
+    form = ItemForm()
 
-    if request.method == 'GET':
-        datos = db.session.query(Product).filter(Product.id == product_id).one()
-        app.logger.info(datos) 
-        return render_template("/products/update.html", datos = datos)
+    if form.validate_on_submit():
+        item.title = form.title.data
+        item.description = form.description.data
+        item.price = form.price.data
+
+        photo = form.photo.data
+      
+        item.photo = photo.filename
+
+        item.updated = datetime.datetime.now()
+
+        db.session.add(item)
+        db.session.commit()
+        flash('Product updated successfully!', 'success')
+        return redirect(url_for('main_bp.llista_dades'))
+
     else:
-        titol = request.form['titulo']
-        desc = request.form['descripcion']
-        foto = request.files['foto'].filename
-        archivo = request.files['foto']
-        filename = secure_filename(archivo.filename)
-        archivo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        precio = float(request.form['precio'])
+        form.title.data = item.title
+        form.description.data = item.description
+        form.price.data = item.price
+        # Para la foto, no establecemos un valor ya que es un archivo
 
-        producte.title = titol
-        producte.description = desc
-        producte.photo = foto
-        producte.price = precio
+    return render_template('products/update.html', form=form, item=item)
 
-        db.session.add(producte)
-        db.session.commit()
-
-        return redirect(url_for("main_bp.llista_dades"))
+@main_bp.route("/products/delete/<int:id>", methods=['GET', 'POST'])
+def delete(id):
+    item = db.session.query(Product).filter(Product.id == id).one_or_none()
+    if item is None:
+        flash('Product not found!', 'danger')
+        return redirect(url_for('main_bp.list'))
     
+    form = DeleteForm()
 
-@main_bp.route("/products/delete/<int:product_id>", methods=["GET"])
-def eliminar_producte(product_id):
-    producte = db.session.query(Product).filter(Product.id == product_id).first()
-    if producte:
-        db.session.delete(producte)
+    if form.validate_on_submit():
+        db.session.delete(item)
         db.session.commit()
-    return redirect(url_for("main_bp.llista_dades"))
+        flash('Product deleted successfully!', 'success')
+        return redirect(url_for('main_bp.llista_dades'))
 
+    return render_template('products/delete.html', form=form, item=item)
+     
 @main_bp.route("/products/read/<int:product_id>")
 def ver_producte(product_id):
     producte = db.session.query(Product).filter(Product.id == product_id).one()

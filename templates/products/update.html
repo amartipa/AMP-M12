@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Producto</title>
     <link rel="stylesheet" href="{{url_for('static', filename='create.css')}}">
-    <title>Document</title>
 </head>
 <body>
-    <h1>{{datos.title}}</h1>
-    <form action="/products/update/{{datos.id}}" method="POST" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="titulo">Título:</label>
-            <input type="text" id="titulo" name="titulo" value="{{datos.title}}" maxlength="255" required>
-        </div>
-        <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" name="descripcion" value="{{datos.description}}"  required>
-        </div>
-        <div class="form-group">
-            <label for="foto">Foto:</label>
-            <!-- Por razones de seguridad no se puede añadir por defecto un archivo en los tipos file -->
-            <input type="file" id="foto" name="foto" accept="image/*" value=\uploads\{{datos.photo}} max-size="2048" required>
-        </div>
-        <div class="form-group">
-            <label for="precio">Precio:</label>
-            <input type="number" id="precio" name="precio" step="0.01" value="{{datos.price}}" required>
-        </div>
-        <div class="form-group">
-            <button type="submit">Enviar</button>
-        </div>
-    </form>
+
+<h2>Actualizar Producto</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.title.label }} {{ form.title() }}
+    <br>
+    {{ form.description.label }} {{ form.description() }}
+    <br>
+    {{ form.price.label }} {{ form.price() }}
+    <br>
+    {{ form.photo.label }} {{ form.photo() }}
+    <br>
+    {{ form.submit() }}
+</form>
+<a href="/list"><i class="fas fa-arrow-left"></i> Tornar a la llista</a>
 </body>
 </html>
