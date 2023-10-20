@@ -19,7 +19,8 @@
         </div>
         <div class="form-group">
             <label for="foto">Foto:</label>
-            <input type="file" id="foto" name="foto" accept="image/*" value={{datos.photo}} max-size="2048" required>
+            <!-- Por razones de seguridad no se puede añadir por defecto un archivo en los tipos file -->
+            <input type="file" id="foto" name="foto" accept="image/*" value=\uploads\{{datos.photo}} max-size="2048" required>
         </div>
         <div class="form-group">
             <label for="precio">Precio:</label>
